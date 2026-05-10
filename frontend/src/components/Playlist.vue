@@ -29,7 +29,7 @@
 </script>
 <template>
     <div class="container">
-        <button v-for="track in tracklist" @click="store.track = track.name" class="track">
+        <button v-for="track in tracklist" @click="store.playTrack(track)" class="track">
             {{ track.name }}
         </button>
     </div>

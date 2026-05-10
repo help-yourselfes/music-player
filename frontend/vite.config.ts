@@ -9,7 +9,7 @@ export default defineConfig({
     alias: {
       '@':path.resolve(__dirname, './src'),
       '@go':path.resolve(__dirname, './wailsjs/go'),
-      '@runtime':path.resolve(__dirname, './wailsjs/runtime'),
+      '@runtime':path.resolve(__dirname, './wailsjs/runtime/runtime'),
     }
   },
   server: {

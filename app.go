@@ -19,6 +19,7 @@ type Playlist struct {
 
 type Track struct {
 	Name string `json:"name"`
+	Path string `json:"path"`
 }
 
 // App struct
@@ -40,18 +41,6 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
-
-	runtime.EventsOn(ctx, "wails:file-drop", func(optionalData ...interface{}) {
-		if len(optionalData) > 0 {
-			files, ok := optionalData[0].([]interface{})
-			if ok {
-				if len(files) > 1 {
-					return
-				}
-				// we'll play only one file
-			}
-		}
-	})
 }
 
 func (a *App) getFormats() map[string]struct{} {
@@ -104,6 +93,7 @@ func (a *App) GetTracks(path string) *Playlist {
 
 		tracks = append(tracks, Track{
 			Name: name,
+			Path: path + "/" + name,
 		})
 	}
 
@@ -113,4 +103,8 @@ func (a *App) GetTracks(path string) *Playlist {
 		PlaylistNames: &playlists,
 		Tracks:        &tracks,
 	}
+}
+
+func (a *App) Play(track Track) {
+	runtime.EventsEmit(a.ctx, "play:track", track)
 }

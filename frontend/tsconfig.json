@@ -23,8 +23,8 @@
       "@go/*": [
         "./wailsjs/go/*"
       ],
-      "@runtime/*": [
-        "./wailsjs/runtime/*"
+      "@runtime": [
+        "./wailsjs/runtime/runtime.d.ts"
       ]
     }
   },
