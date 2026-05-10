@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import Player from './components/Player.vue';
+import Playlist from './components/Playlist.vue';
 
 
 </script>
 
 <template>
+  <Playlist />
   <Player />
 </template>
 

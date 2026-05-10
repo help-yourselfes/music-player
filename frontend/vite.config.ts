@@ -11,5 +11,14 @@ export default defineConfig({
       '@go':path.resolve(__dirname, './wailsjs/go'),
       '@runtime':path.resolve(__dirname, './wailsjs/runtime'),
     }
+  },
+  server: {
+    proxy: {
+      '/stream': {
+        bypass: (req, res) => {
+          return false
+        }
+      }
+    }
   }
 })

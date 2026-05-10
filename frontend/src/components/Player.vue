@@ -1,14 +1,15 @@
 <script setup lang="ts">
-    import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue';
+    import { useAppStore } from '@/stores/app';
+import { computed } from 'vue';
+    const store = useAppStore()
 
-    const fileName = ref("rythmic/memorex-memories-in-motion.mp3")
-    const fileURL = computed(() => "/stream/" + fileName.value)
+
+    // const src = computed(() => "/files/static/stream/?path="+btoa(store.trackPath))
+    const src = computed(() => "/files/static/stream/?path="+(store.trackPath))
 </script>
 <template>
     <div class="container">
-
-        <input v-model="fileName" class="name" />
-        <audio ref="player" controls :src="fileURL" />
+        <audio ref="player" controls :src />
     </div>
 </template>
 
