@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Playlist struct {
@@ -39,17 +39,12 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
 func (a *App) getFormats() map[string]struct{} {
 	if len(a.formatsSet) == 0 {
 		a.formatsSet = make(map[string]struct{})
 
 		for _, ext := range a.formats {
-			a.formatsSet[ext] = struct{}{}
+			a.formatsSet["."+ext] = struct{}{}
 		}
 
 	}
@@ -75,7 +70,7 @@ func (a *App) GetTracks(path string) *Playlist {
 		}
 
 		name := file.Name()
-		// ext := filepath.Ext(name)
+		ext := strings.ToLower(filepath.Ext(name))
 
 		if info.IsDir() {
 			playlists = append(playlists, rootName)
@@ -83,6 +78,12 @@ func (a *App) GetTracks(path string) *Playlist {
 		}
 
 		if name[0] == '.' {
+			continue
+		}
+
+		formats := a.getFormats()
+
+		if _, ok := formats[ext]; !ok {
 			continue
 		}
 
