@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -34,7 +35,10 @@ func NewApp() *App {
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 
-	a.ConnectDB()
+	err := a.ConnectDB()
+	if err != nil {
+		fmt.Println("Error connecting to storage:\t", err)
+	}
 }
 
 func (a *App) getFormats() map[string]struct{} {

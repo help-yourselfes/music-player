@@ -1,13 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"music-player/app/infrastructure/sqliteRepos"
 	"music-player/app/infrastructure/storage"
 	"music-player/app/services"
 	"os"
 	"path/filepath"
-
-	_ "modernc.org/sqlite"
 )
 
 func (a *App) ConnectDB() error {
@@ -19,6 +18,7 @@ func (a *App) ConnectDB() error {
 	path := filepath.Join(basepath, name)
 
 	db, err := storage.InitSQLiteStorage(path)
+	fmt.Println("Storage located at:\t", path)
 	if err != nil {
 		return err
 	}
