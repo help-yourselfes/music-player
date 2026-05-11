@@ -1,0 +1,25 @@
+package storage
+
+var Query = `
+
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS tracks (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT,
+	path TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS playlists (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS playlist_tracks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    trackID INTEGER,
+    playlistID INTEGER,
+    FOREIGN KEY(trackID) REFERENCES tracks(id) ON DELETE CASCADE,
+    FOREIGN KEY(playlistID) REFERENCES playlists(id) ON DELETE CASCADE
+);
+`

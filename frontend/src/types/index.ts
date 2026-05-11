@@ -1,4 +1,4 @@
-import { main } from "@go/models"
-type Track = main.Track
-type Playlist = main.Playlist
+import { models } from "@go/models"
+type Track = models.Track
+type Playlist = models.Playlist
 export type { Track, Playlist }

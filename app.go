@@ -7,27 +7,19 @@ import (
 	"path/filepath"
 	"strings"
 
+	"music-player/app/models"
+	"music-player/app/services"
+
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
-
-type Playlist struct {
-	Name          string    `json:"name"`
-	Path          string    `json:"path"`
-	PlaylistNames *[]string `json:"playlists"`
-	Tracks        *[]Track
-}
-
-type Track struct {
-	Name string `json:"name"`
-	Path string `json:"path"`
-}
 
 // App struct
 type App struct {
 	formats    []string
 	formatsSet map[string]struct{}
 
-	ctx context.Context
+	service services.AppService
+	ctx     context.Context
 }
 
 // NewApp creates a new App application struct
@@ -41,6 +33,8 @@ func NewApp() *App {
 // so we can call the runtime methods
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	a.ConnectDB()
 }
 
 func (a *App) getFormats() map[string]struct{} {
@@ -56,7 +50,7 @@ func (a *App) getFormats() map[string]struct{} {
 	return a.formatsSet
 }
 
-func (a *App) GetTracks(path string) *Playlist {
+func (a *App) GetTracks(path string) *models.Playlist {
 	rootName := filepath.Base(path)
 	files, err := os.ReadDir(path)
 	if err != nil {
@@ -65,7 +59,7 @@ func (a *App) GetTracks(path string) *Playlist {
 	}
 
 	var playlists []string
-	var tracks []Track
+	var tracks []models.Track
 
 	for _, file := range files {
 		info, err := file.Info()
@@ -91,13 +85,13 @@ func (a *App) GetTracks(path string) *Playlist {
 			continue
 		}
 
-		tracks = append(tracks, Track{
+		tracks = append(tracks, models.Track{
 			Name: name,
 			Path: path + "/" + name,
 		})
 	}
 
-	return &Playlist{
+	return &models.Playlist{
 		Name:          rootName,
 		Path:          path,
 		PlaylistNames: &playlists,
@@ -105,6 +99,6 @@ func (a *App) GetTracks(path string) *Playlist {
 	}
 }
 
-func (a *App) Play(track Track) {
+func (a *App) Play(track models.Track) {
 	runtime.EventsEmit(a.ctx, "play:track", track)
 }

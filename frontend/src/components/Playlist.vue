@@ -1,11 +1,11 @@
 <script setup lang="ts">
     import { onMounted, ref, watch } from 'vue';
-    import { main } from "@go/models"
     import { GetTracks } from "@go/main/App"
     import { useAppStore } from '@/stores/app';
+    import { Track } from '@/types';
 
     const path = ref("D:/media/music")
-    const tracklist = ref<main.Track[]>([])
+    const tracklist = ref<Track[]>([])
 
     const reloadTracks = async () => {
         try {
