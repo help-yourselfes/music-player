@@ -166,6 +166,44 @@ func (r *pl) Delete(ctx context.Context, id int64) error {
 	return err
 }
 
+func (r *pl) ListTracks(ctx context.Context, id int64) ([]*models.Track, error) {
+	query := `
+	SELECT * FROM tracks
+	JOIN playlist_tracks ON tracks.id = playlist_tracks.trackID
+	WHERE playlist_tracks.playlistID = ?`
+
+	rows, err := r.db.QueryContext(ctx, query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	tracks := make([]*models.Track, 0)
+	for rows.Next() {
+		var track models.Track
+
+		err := rows.Scan(
+			&track.ID,
+			&track.Name,
+			&track.Path,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		tracks = append(tracks, &track)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return tracks, err
+}
+
 func (r *pl) List(ctx context.Context) ([]*models.Playlist, error) {
 	query := `
 	SELECT * FROM playlists`
