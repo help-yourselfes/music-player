@@ -1,10 +1,10 @@
 package models
 
-type playlistID int64
-type trackID int64
+type PlaylistID int64
+type TrackID int64
 
 type Playlist struct {
-	ID            playlistID `json:"id"`
+	ID            PlaylistID `json:"id"`
 	Name          string     `json:"name"`
 	Path          string     `json:"path"`
 	PlaylistNames *[]string  `json:"playlists"`
@@ -12,7 +12,7 @@ type Playlist struct {
 }
 
 type Track struct {
-	ID   trackID `json:"id"`
+	ID   TrackID `json:"id"`
 	Name string  `json:"name"`
 	Path string  `json:"path"`
 }
