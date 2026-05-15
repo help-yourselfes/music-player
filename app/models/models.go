@@ -1,5 +1,8 @@
 package models
 
+type PlaylistID = int64
+type TrackID = int64
+
 type Playlist struct {
 	ID            int64     `json:"id"`
 	Name          string    `json:"name"`
