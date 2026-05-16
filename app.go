@@ -88,3 +88,36 @@ func (a *App) GetTracks(path string) *models.Playlist {
 func (a *App) Play(track models.Track) {
 	runtime.EventsEmit(a.ctx, "play:track", track)
 }
+
+func (a *App) AddPlaylistEmpty(name string) (models.PlaylistID, error) {
+	id, err := a.service.AddPlaylist(a.ctx, name, "")
+	return id, err
+}
+
+func (a *App) AddPlaylistByPath(path string) (models.PlaylistID, error) {
+	name := filepath.Base(path)
+	id, err := a.service.AddPlaylist(a.ctx, name, path)
+	if err != nil {
+		return -1, err
+	}
+
+	entries, err := os.ReadDir(path)
+	for _, entry := range entries {
+		if !filecheck.IsEntryTrack(entry) {
+			continue
+		}
+
+		name := entry.Name()
+		reqTrack := &models.Track{
+			Name: name,
+			Path: filepath.Join(path, name),
+		}
+		_, err := a.service.AddTrack(a.ctx, reqTrack)
+		if err != nil {
+			log.Fatal(err)
+			continue
+		}
+	}
+
+	return id, nil
+}
