@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"music-player/app/infrastructure/filecheck"
 	"music-player/app/models"
 	"music-player/app/services"
 
@@ -66,29 +66,11 @@ func (a *App) GetTracks(path string) *models.Playlist {
 	var tracks []models.Track
 
 	for _, file := range files {
-		info, err := file.Info()
-		if err != nil {
+		if !filecheck.IsEntryTrack(file) {
 			continue
 		}
 
 		name := file.Name()
-		ext := strings.ToLower(filepath.Ext(name))
-
-		if info.IsDir() {
-			playlists = append(playlists, rootName)
-			continue
-		}
-
-		if name[0] == '.' {
-			continue
-		}
-
-		formats := a.getFormats()
-
-		if _, ok := formats[ext]; !ok {
-			continue
-		}
-
 		tracks = append(tracks, models.Track{
 			Name: name,
 			Path: path + "/" + name,
