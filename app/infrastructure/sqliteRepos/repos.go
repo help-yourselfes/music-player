@@ -166,6 +166,25 @@ func (r *pl) Delete(ctx context.Context, id int64) error {
 	return err
 }
 
+func (r *pl) AddTrack(ctx context.Context, playlistID int64, trackID int64) error {
+	query := `
+	INSERT OR IGNORE INTO playlist_tracks (
+		playlistID,
+		trackID
+	) VALUES (?,?)`
+
+	_, err := r.db.ExecContext(ctx, query, playlistID, trackID)
+	return err
+}
+
+func (r *pl) RemoveTrack(ctx context.Context, playlistID int64, trackID int64) error {
+	query := `
+	DELETE FROM playlist_tracks
+	WHERE playlistID = ? AND trackID = ?`
+	_, err := r.db.ExecContext(ctx, query, playlistID, trackID)
+	return err
+}
+
 func (r *pl) ListTracks(ctx context.Context, id int64) ([]*models.Track, error) {
 	query := `
 	SELECT * FROM tracks

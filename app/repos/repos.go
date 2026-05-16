@@ -16,6 +16,8 @@ type PlaylistRepo interface {
 	Create(ctx context.Context, playlist *models.Playlist) (int64, error)
 	Read(ctx context.Context, id int64) (*models.Playlist, error)
 	Delete(ctx context.Context, id int64) error
+	AddTrack(ctx context.Context, playlistID int64, trackID int64) error
+	RemoveTrack(ctx context.Context, playlistID int64, trackID int64) error
 	ListTracks(ctx context.Context, id int64) ([]*models.Track, error)
 	List(ctx context.Context) ([]*models.Playlist, error)
 }

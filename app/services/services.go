@@ -55,3 +55,11 @@ func (s *AppService) GetPlaylistTracks(ctx context.Context, id models.PlaylistID
 	list, err := s.playlists.ListTracks(ctx, id)
 	return list, err
 }
+
+func (s *AppService) AddPlaylistTrack(ctx context.Context, playlistID int64, trackID int64) error {
+	return s.playlists.AddTrack(ctx, playlistID, trackID)
+}
+
+func (s *AppService) RemovePlaylistTrack(ctx context.Context, playlistID int64, trackID int64) error {
+	return s.playlists.RemoveTrack(ctx, playlistID, trackID)
+}

@@ -121,3 +121,15 @@ func (a *App) AddPlaylistByPath(path string) (models.PlaylistID, error) {
 
 	return id, nil
 }
+
+func (a *App) GetPlaylistTracks(id models.PlaylistID) ([]*models.Track, error) {
+	return a.service.GetPlaylistTracks(a.ctx, id)
+}
+
+func (a *App) AddTrackToPlaylist(playlistID int64, trackID int64) error {
+	return a.service.AddPlaylistTrack(a.ctx, playlistID, trackID)
+}
+
+func (a *App) RemoveTrackToPlaylist(playlistID int64, trackID int64) error {
+	return a.service.RemovePlaylistTrack(a.ctx, playlistID, trackID)
+}
